@@ -19,4 +19,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 //Funciones de usuarios
-Route::post('api/register', [UserController::class, 'register']);
+Route::post('/register', 'App\Http\Controllers\UserController@store');

@@ -2,36 +2,77 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Users;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-
-
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
-        $users = Users::all();
-        return response()->json($users);
+        //
     }
 
-
-    public function register(Request $request)
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
     {
+        //
+    }
 
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $user = new User();
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->password = $request->input("password");
 
-        $validatedData = $request->validate([
-            'name' => 'required|max:55',
-            'email' => 'email|required|unique:users',
-            'password' => 'required|confirmed|min:8',
-        ]);
+        $user->save();
 
-        $validatedData['password'] = bcrypt($request->password);
+        $data = [
+            'status' => 200,
+            'message' => 'Client created successfully',
+            'data' => $user,
+        ];
 
-        $user = Users::create($validatedData);
+        return response()->json($data, 200);
+    }
 
-        $accessToken = $user->createToken('authToken')->accessToken;
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+    }
 
-        return response(['user' => $user, 'access_token' => $accessToken]);
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
     }
 }

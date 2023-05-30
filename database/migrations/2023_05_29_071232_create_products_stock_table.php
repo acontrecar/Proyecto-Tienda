@@ -13,9 +13,12 @@ return new class extends Migration
     {
         Schema::create('products_stock', function (Blueprint $table) {
             $table->id('stock_id');
-            $table->integer('product_id');
-            $table->integer('size_id');
+            $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('size_id');
             $table->integer('quantity');
+
+            $table->foreign('product_id')->references('product_id')->on('products');
+            $table->foreign('size_id')->references('size_id')->on('sizes');
         });
     }
 

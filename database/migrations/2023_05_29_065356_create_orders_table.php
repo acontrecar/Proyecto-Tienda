@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id('order_id');
-            $table->integer('user_id');
+            $table->unsignedBigInteger('user_id');
             $table->timestamp('order_date');
             $table->string('status');
             $table->integer('total_price');
+
+            $table->foreign('user_id')->references('user_id')->on('users');
         });
     }
 

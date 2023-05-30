@@ -17,9 +17,11 @@ return new class extends Migration
             $table->text('description');
             $table->decimal('price', 8, 2);
             $table->string('image');
-            $table->integer('category_id');
+            $table->unsignedBigInteger('category_id');
             $table->integer('rating_overage')->nullable();
             $table->integer('rating_count')->nullable();
+
+            $table->foreign('category_id')->references('category_id')->on('categories');
         });
     }
 
