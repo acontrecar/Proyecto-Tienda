@@ -15,6 +15,18 @@ class UserController extends Controller
      */
     public function index()
     {
+
+        //Si no es admin no puede crear productos
+        $user = auth()->user();
+
+        if (!$user || $user->role != 'ROLE_ADMIN') {
+            $data = [
+                'status' => 401,
+                'message' => 'Unauthorized',
+            ];
+            return response()->json($data, $data['status']);
+        }
+
         $users = User::all();
 
         return response()->json([
@@ -90,14 +102,6 @@ class UserController extends Controller
         }
 
         $user = User::where('email', $request->email)->firstorFail();
-
-        // $data = [
-        //     'status' => 200,
-        //     'message' => 'User logged in successfully',
-        //     'data' => $user,
-        // ];
-
-        // return response()->json($data, $data['status']);
 
         $token = $user->createToken('auth_token')->plainTextToken;
 

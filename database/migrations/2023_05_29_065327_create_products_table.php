@@ -20,6 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('subcategory_id');
             $table->integer('rating_overage')->nullable();
             $table->integer('rating_count')->nullable();
+            $table->timestamps();
 
             $table->foreign('subcategory_id')->references('subcategory_id')->on('subcategories');
         });
