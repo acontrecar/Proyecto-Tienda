@@ -26,4 +26,20 @@ class Product extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function subcategory()
+    {
+        return $this->belongsTo(Subcategory::class, 'subcategory_id', 'subcategory_id');
+    }
+
+    public function product_stocks()
+    {
+        return $this->hasMany(Product_stock::class, 'product_id', 'product_id');
+    }
+
+    public function getQuantityBySize($size_id)
+    {
+        $inventory = $this->product_stocks()->where('size_id', $size_id)->first();
+        return $inventory ? $inventory->quantity : null;
+    }
 }

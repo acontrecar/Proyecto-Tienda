@@ -4,6 +4,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SubcategoryController;
+use App\Http\Controllers\ProductStockController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -37,7 +39,9 @@ Route::get('logout', [UserController::class, 'logout'])->middleware('auth:sanctu
 //Rutas de productos
 Route::get('products', [ProductController::class, 'index']);
 Route::post('products/create', [ProductController::class, 'store'])->middleware('auth:sanctum'); //Esto deberia poder hacerlo solo el admin
-
+Route::post('products/{subcategory_id}/products', [ProductController::class, 'productsBySubCategory']);
+Route::get('products/{id}', [ProductController::class, 'show']);
+Route::get('products/{id}/size/{size_id}', [ProductController::class, 'showBySize']);
 
 //Rutas de categorias
 Route::get('categories', [CategoryController::class, 'index']);
@@ -47,3 +51,15 @@ Route::post('categories/create', [CategoryController::class, 'store'])->middlewa
 //Rutas de subcategorias
 Route::get('subcategories', [SubcategoryController::class, 'index']);
 Route::post('subcategories/create', [SubcategoryController::class, 'store'])->middleware('auth:sanctum');
+
+
+//Rutas de products_stock
+Route::get('products_stock', [ProductStockController::class, 'index']);
+Route::post('products_stock/create', [ProductStockController::class, 'store'])->middleware('auth:sanctum');
+
+
+//Rutas de orders
+Route::get('orders', [OrderController::class, 'index']);
+Route::post('orders/create', [OrderController::class, 'store'])->middleware('auth:sanctum');
+Route::get('orders/{id}', [OrderController::class, 'show']);
+Route::get('orders/{id}/products', [OrderController::class, 'productsByOrder']);

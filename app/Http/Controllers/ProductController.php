@@ -114,12 +114,108 @@ class ProductController extends Controller
     }
 
     /**
+     * Return a list of products by category.
+     */
+
+    public function productsBySubCategory(string $subcategory_id)
+    {
+
+        $validator = Validator::make(['subcategory_id' => $subcategory_id], [
+            'subcategory_id' => 'required|exists:subcategories,subcategory_id',
+        ]);
+
+        if ($validator->fails()) {
+            $data = [
+                'status' => 400,
+                'message' => 'Validation error',
+                'data' => $validator->errors(),
+            ];
+
+            return response()->json($data, $data['status']);
+        }
+
+        $products = Product::whereHas('subcategory', function ($query) use ($subcategory_id) {
+            $query->where('subcategory_id', $subcategory_id);
+        })->get();
+
+        $data = [
+            'status' => 200,
+            'message' => 'Products list',
+            'data' => $products,
+        ];
+
+        return response()->json($data, $data['status']);
+    }
+
+    /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
         //
 
+        $product = Product::find($id);
+
+        if (!$product) {
+            $data = [
+                'status' => 404,
+                'message' => 'Product not found',
+            ];
+
+            return response()->json($data, $data['status']);
+        }
+
+        $data = [
+            'status' => 200,
+            'message' => 'Product found',
+            'data' => $product,
+        ];
+
+        return response()->json($data, $data['status']);
+    }
+
+    /**
+     * Display the specified products by size.
+     */
+    public function showBySize(string $id, string $size_id)
+    {
+
+        $product = Product::find($id);
+
+        if (!$product) {
+            $data = [
+                'status' => 404,
+                'message' => 'Product not found',
+            ];
+
+            return response()->json($data, $data['status']);
+        }
+
+        $validator = Validator::make(['size_id' => $size_id], [
+            'size_id' => 'required|exists:products_stock,size_id,product_id,' . $id,
+        ]);
+
+        if ($validator->fails()) {
+            $data = [
+                'status' => 400,
+                'message' => 'Validation error',
+                'data' => $validator->errors(),
+            ];
+
+            return response()->json($data, $data['status']);
+        }
+
+        $quantity = $product->getQuantityBySize($size_id);
+
+        $data = [
+            'status' => 200,
+            'message' => 'Product found',
+            'quantity' => $quantity,
+            'product' => $product,
+            'size' => $size_id,
+        ];
+
+        return response()->json($data, $data['status']);
     }
 
     /**
