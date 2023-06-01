@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SubcategoryController;
 use App\Http\Controllers\ProductStockController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderDetailsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -43,6 +44,7 @@ Route::post('products/{subcategory_id}/products', [ProductController::class, 'pr
 Route::get('products/{id}', [ProductController::class, 'show']);
 Route::get('products/{id}/size/{size_id}', [ProductController::class, 'showBySize']);
 
+
 //Rutas de categorias
 Route::get('categories', [CategoryController::class, 'index']);
 Route::post('categories/create', [CategoryController::class, 'store'])->middleware('auth:sanctum');
@@ -58,8 +60,24 @@ Route::get('products_stock', [ProductStockController::class, 'index']);
 Route::post('products_stock/create', [ProductStockController::class, 'store'])->middleware('auth:sanctum');
 
 
+//Rutas de orders_details
+Route::get('orders_details', [OrderDetailsController::class, 'index']);
+Route::post('orders_details/create', [OrderDetailsController::class, 'store'])->middleware('auth:sanctum');
+
+
+
+
+
+
+
+
+
+
+
+
 //Rutas de orders
-Route::get('orders', [OrderController::class, 'index']);
-Route::post('orders/create', [OrderController::class, 'store'])->middleware('auth:sanctum');
-Route::get('orders/{id}', [OrderController::class, 'show']);
-Route::get('orders/{id}/products', [OrderController::class, 'productsByOrder']);
+// Route::get('orders', [OrderController::class, 'index']);
+// Route::post('orders/createOrder', [OrderController::class, 'store'])->middleware('auth:sanctum');
+// Route::post('orders/finishOrder', [OrderController::class, 'store'])->middleware('auth:sanctum');
+// Route::get('orders/{id}', [OrderController::class, 'show']);
+// Route::get('orders/{id}/products', [OrderController::class, 'productsByOrder']);

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->bigIncrements('order_id');
             $table->unsignedBigInteger('user_id');
-            $table->timestamp('order_date');
+            $table->timestamp('order_date')->nullable();
             $table->string('status');
             $table->integer('total_price');
 
