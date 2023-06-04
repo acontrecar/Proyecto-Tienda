@@ -62,7 +62,7 @@ Route::post('products_stock/create', [ProductStockController::class, 'store'])->
 
 //Rutas de orders_details
 Route::get('orders_details', [OrderDetailsController::class, 'index']);
-Route::post('orders_details/create', [OrderDetailsController::class, 'store'])->middleware('auth:sanctum');
+Route::post('orders_details/create', [OrderDetailsController::class, 'store'])->middleware('auth:sanctum'); //TODO
 
 
 
