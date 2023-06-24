@@ -35,7 +35,15 @@ Route::get('logout', [UserController::class, 'logout'])->middleware('auth:sanctu
 // Route::middleware('auth:sanctum')->group(function () {
 //     Route::get('logout', [UserController::class, 'logout']);
 // });
+Route::get('products-image/{imageName}', function ($imageName) {
+    $path = storage_path('app/productsImage/' . $imageName);
 
+    if (!file_exists($path)) {
+        abort(404);
+    }
+
+    return response()->file($path);
+});
 
 //Rutas de productos
 Route::get('products', [ProductController::class, 'index']);

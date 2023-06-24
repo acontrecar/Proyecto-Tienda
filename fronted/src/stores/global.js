@@ -5,7 +5,6 @@ export const useGlobalStore = defineStore('global', () => {
   const sidebarOpen = ref(false)
 
   function toggleDropwdownSideBar() {
-    console.log(sidebarOpen.value)
     sidebarOpen.value = !sidebarOpen.value
   }
 
