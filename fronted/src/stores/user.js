@@ -8,6 +8,7 @@ export const useUserStore = defineStore('user', () => {
   const error = ref(null)
   const loading = ref(false)
   const loggedIn = ref(false)
+  const message = ref(null)
 
   const register = async (data) => {
     loading.value = true
@@ -38,9 +39,10 @@ export const useUserStore = defineStore('user', () => {
         'Content-Type': 'application/json'
       }
       const response = await service.post('/login', data, { headers })
-      user.value = response.data.user
+      user.value = response.data.data
       token.value = response.data.token
       loggedIn.value = true
+      message.value = response.data.message
 
       console.log('response', response.data)
     } catch (err) {

@@ -94,7 +94,8 @@ class ProductController extends Controller
         }
 
         $imageName = time() . '.' . $image->extension();
-        $image->storeAs('productsImage', $imageName);
+        $image->storeAs('', $imageName, 'productsImage');
+
 
         $product = Product::create([
             'name' => $arrayJson['name'],
@@ -103,6 +104,8 @@ class ProductController extends Controller
             'image' => $imageName,
             'subcategory_id' => $arrayJson['subcategory_id'],
         ]);
+
+
 
         $data = [
             'status' => 201,

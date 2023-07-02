@@ -36,7 +36,7 @@ Route::get('logout', [UserController::class, 'logout'])->middleware('auth:sanctu
 //     Route::get('logout', [UserController::class, 'logout']);
 // });
 Route::get('products-image/{imageName}', function ($imageName) {
-    $path = storage_path('app/productsImage/' . $imageName);
+    $path = storage_path('app/public/productsImage/' . $imageName);
 
     if (!file_exists($path)) {
         abort(404);
