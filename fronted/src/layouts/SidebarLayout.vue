@@ -36,7 +36,6 @@
         <li>
           <a
             @click="changeView('products')"
-            href="#"
             class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
           >
             <svg
@@ -57,7 +56,7 @@
         </li>
         <li>
           <a
-            href="#"
+            @click="changeView('login-register')"
             class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
           >
             <svg

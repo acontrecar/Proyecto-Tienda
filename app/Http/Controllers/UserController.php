@@ -53,7 +53,14 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'email|required|unique:users',
-            'password' => 'required|string|min:8',
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                // Pattern para minimo una mayuscula y un numero
+                'regex:/^(?=.*[A-Z])(?=.*\d).+$/'
+            ],
+
         ]);
 
         if ($validator->fails()) {
