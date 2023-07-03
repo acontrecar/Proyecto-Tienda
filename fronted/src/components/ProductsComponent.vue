@@ -9,19 +9,23 @@
     <div v-if="isLoading" class="flex items-center justify-center">
       <img src="../assets/images/loading.gif" />
     </div>
-    <div class="flex items-center justify-center">
+    <div v-else class="flex items-center justify-center">
       <div
         class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
       >
-        <div
+        <button
           v-for="product in products"
           :key="product.id"
-          class="flex flex-col items-center justify-center w-64 h-64 p-4 m-4 bg-slate-400 rounded shadow-md dark:bg-gray-800"
+          class="product-item flex flex-col items-center justify-center w-64 h-64 p-4 m-4 bg-green-200 rounded shadow-md dark:bg-gray-800 hover:bg-green-300 dark:hover:bg-gray-700"
         >
           <!-- Usa la ruta completa incluyendo el prefijo 'storage' -->
-          <img :src="product.image" :alt="product.name" class="w-32 h-32 rounded-full" />
+          <img
+            :src="'http://api-rest-tienda.test/productsImage/' + product.image"
+            :alt="product.name"
+            class="w-32 h-32 rounded-full"
+          />
           {{ product.name }}
-        </div>
+        </button>
       </div>
     </div>
   </div>
@@ -71,4 +75,15 @@ const sidebarOpen = computed(() => {
 })
 </script>
 
-<style lang=""></style>
+<style scoped>
+.product-item {
+  width: 18rem;
+  height: 18rem;
+  transition: transform 0.3s; /* Agrega una transición suave para el efecto */
+}
+
+/* Agrega el efecto de hover que aumenta el tamaño */
+.product-item:hover {
+  transform: scale(1.1); /* Aumenta el tamaño en un 10% (1.1 veces) al pasar el ratón */
+}
+</style>

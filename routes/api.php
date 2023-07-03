@@ -8,7 +8,9 @@ use App\Http\Controllers\ProductStockController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderDetailsController;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,13 +38,26 @@ Route::get('logout', [UserController::class, 'logout'])->middleware('auth:sanctu
 //     Route::get('logout', [UserController::class, 'logout']);
 // });
 Route::get('products-image/{imageName}', function ($imageName) {
-    $path = storage_path('app/public/productsImage/' . $imageName);
+    // $path = storage_path('app/public/productsImage/' . $imageName);
 
-    if (!file_exists($path)) {
-        abort(404);
+    // if (!file_exists($path)) {
+    //     abort(404);
+    // }
+
+    // return response()->file($path);
+
+    $isset = Storage::disk('productsImage')->exists($imageName);
+
+    if ($isset) {
+        $file = Storage::disk('productsImage')->get($imageName);
+        return new Response($file, 200);
+    } else {
+        $data = [
+            'status' => 404,
+            'message' => 'Image not found',
+        ];
+        return response()->json($data, $data['status']);
     }
-
-    return response()->file($path);
 });
 
 //Rutas de productos

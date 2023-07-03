@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use App\Models\Subcategory;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
@@ -20,6 +21,11 @@ class ProductController extends Controller
 
         $products = Product::all();
 
+        // foreach ($products as $product) {
+        //     $imagePath = 'productsImage/' . $product->image;
+        //     $product->image = $this->getImageBase64($imagePath);
+        // }
+
         $data = [
             'status' => 200,
             'message' => 'Products list',
@@ -28,6 +34,28 @@ class ProductController extends Controller
 
         return response()->json($data, $data['status']);
     }
+
+
+    // private function getImageBase64($imagePath)
+    // {
+    //     $imageContents = Storage::get($imagePath);
+
+    //     // Agregar logs para verificar el contenido de la imagen antes de codificarla
+    //     Log::info('Image Path: ' . $imagePath);
+    //     Log::info('Image Contents: ' . $imageContents);
+
+    //     $base64 = base64_encode($imageContents);
+
+    //     // Obtener la extensión del archivo desde su nombre
+    //     $extension = pathinfo($imagePath, PATHINFO_EXTENSION);
+
+    //     // Inferir el tipo de imagen según la extensión del archivo
+    //     $mime = 'image/' . $extension;
+
+    //     return "data:{$mime};base64,{$base64}";
+    // }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -96,12 +124,15 @@ class ProductController extends Controller
         $imageName = time() . '.' . $image->extension();
         $image->storeAs('', $imageName, 'productsImage');
 
+        // $imageContents = file_get_contents($image);
+        // $base64Image = base64_encode($imageContents);
+
 
         $product = Product::create([
             'name' => $arrayJson['name'],
             'description' => $arrayJson['description'],
             'price' => (float) $arrayJson['price'],
-            'image' => $imageName,
+            'image' => $image, //antes era image
             'subcategory_id' => $arrayJson['subcategory_id'],
         ]);
 
