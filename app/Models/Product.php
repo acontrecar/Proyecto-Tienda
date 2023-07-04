@@ -42,4 +42,9 @@ class Product extends Model
         $inventory = $this->product_stocks()->where('size_id', $size_id)->first();
         return $inventory ? $inventory->quantity : null;
     }
+
+    public function sizes()
+    {
+        return $this->belongsToMany(Sizes::class, 'product_stocks', 'product_id', 'size_id');
+    }
 }

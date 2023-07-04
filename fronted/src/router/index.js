@@ -17,6 +17,17 @@ const router = createRouter({
       path: '/loginRegister',
       name: 'login-register',
       component: () => import('../components/LoginRegisterComponent.vue')
+    },
+    {
+      path: '/products/:id',
+      name: 'product-detail',
+      component: () => import('../components/ProductDetailComponent.vue')
+
+      //   props: (route) => {
+      //     return {
+      //       id: route.params.id
+      //     }
+      //   }
     }
   ]
 })

@@ -21,11 +21,6 @@ class ProductController extends Controller
 
         $products = Product::all();
 
-        // foreach ($products as $product) {
-        //     $imagePath = 'productsImage/' . $product->image;
-        //     $product->image = $this->getImageBase64($imagePath);
-        // }
-
         $data = [
             'status' => 200,
             'message' => 'Products list',
@@ -35,25 +30,6 @@ class ProductController extends Controller
         return response()->json($data, $data['status']);
     }
 
-
-    // private function getImageBase64($imagePath)
-    // {
-    //     $imageContents = Storage::get($imagePath);
-
-    //     // Agregar logs para verificar el contenido de la imagen antes de codificarla
-    //     Log::info('Image Path: ' . $imagePath);
-    //     Log::info('Image Contents: ' . $imageContents);
-
-    //     $base64 = base64_encode($imageContents);
-
-    //     // Obtener la extensión del archivo desde su nombre
-    //     $extension = pathinfo($imagePath, PATHINFO_EXTENSION);
-
-    //     // Inferir el tipo de imagen según la extensión del archivo
-    //     $mime = 'image/' . $extension;
-
-    //     return "data:{$mime};base64,{$base64}";
-    // }
 
 
 
@@ -186,9 +162,7 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        //
-
-        $product = Product::find($id);
+        $product = Product::with('product_stocks.size')->find($id);
 
         if (!$product) {
             $data = [
@@ -199,14 +173,36 @@ class ProductController extends Controller
             return response()->json($data, $data['status']);
         }
 
+        // Obtener los detalles de todas las tallas disponibles para este producto
+        $sizesData = [];
+        foreach ($product->product_stocks as $stock) {
+            $sizeData = [
+                'size_id' => $stock->size->size_id,
+                'name' => $stock->size->name,
+                'quantity_available' => $stock->quantity,
+            ];
+            $sizesData[] = $sizeData;
+        }
+
         $data = [
             'status' => 200,
             'message' => 'Product found',
-            'data' => $product,
+            'data' => [
+                'product_id' => $product->product_id,
+                'name' => $product->name,
+                'description' => $product->description,
+                'price' => $product->price,
+                'image' => $product->image,
+                'subcategory_id' => $product->subcategory_id,
+                'rating_overage' => $product->rating_overage,
+                'rating_count' => $product->rating_count,
+                'sizes' => $sizesData,
+            ],
         ];
 
         return response()->json($data, $data['status']);
     }
+
 
     /**
      * Display the specified products by size.
@@ -214,7 +210,7 @@ class ProductController extends Controller
     public function showBySize(string $id, string $size_id)
     {
 
-        $product = Product::find($id);
+        $product = Product::with('sizes')->find($id);
 
         if (!$product) {
             $data = [
